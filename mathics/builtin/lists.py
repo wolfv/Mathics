@@ -272,7 +272,7 @@ def walk_parts(list_of_list, indices, evaluation, assign_list=None):
                     if index.leaves[1].get_name() == 'System`All':
                         stop = None
                     else:
-                        evaluation.message('Part,' 'span', index)
+                        evaluation.message('Part', 'span', index)
                         return False
             if len(index.leaves) > 2:
                 step = index.leaves[2].get_int_value()
