@@ -2122,3 +2122,55 @@ class Total(Builtin):
         'Total[list_List]': 'Fold[Plus, list]',
         'Total[list_List, n_]': 'Fold[Plus, Flatten[list, n]]'
     }
+
+
+class Mean(Builtin):
+    """
+    <dl>
+    <dt>'Mean[$list$]'
+    <dd>
+        Mean over all values in list (Total[list] / Length[list])
+    </dd>
+    </dt>
+    </dl>
+    >> Mean[{1,2,3}]
+     = 2
+    >> Mean[{a, b, 213}]
+     = (123 + a + b) / 3
+    """
+    rules = {
+        'Mean[list_List]': 'Total[list] / Length[list]'
+    }
+
+
+class Variance(Builtin):
+    """
+    <dl>
+    <dt>'Mean[$list$]'
+    <dd>
+        Mean over all values in list (Total[list] / Length[list])
+    </dd>
+    </dt>
+    </dl>
+    >> Mean[{1,2,3}]
+     = 2
+    >> Mean[{a, b, 213}]
+     = (123 + a + b) / 3
+    """
+
+    rules = {
+        'Variance[list_List]': '(list-Mean[list]).Conjugate[list-Mean[list]]/(Length[list]-1)'
+    }
+
+
+class StandardDeviation(Builtin):
+    rules = {
+        'StandardDeviation[list_List]': 'Sqrt[Variance[list]]'
+    }
+
+class Quantile(Builtin):
+
+    rules = {
+        'Quantile[list_List, q_RealValueQ]': 'Sort[list, Less][[Ceiling[q * Length[list]]]]',
+        'Quantile[list_List, q_List]': 'Quantile[list, singleq] /@ q'
+    }
