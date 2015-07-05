@@ -2013,6 +2013,7 @@ class Complement(Builtin):
         result.sort()
         return result
 
+
 class Fold(Builtin):
     """
     <dl>
@@ -2030,7 +2031,7 @@ class Fold(Builtin):
 
     rules = {
         'Fold[exp_, x_, head_]': 'Module[{list = Level[head, 1], res = x, i = 1}, Do[res = exp[res, list[[i]]], {i, 1, Length[list]}]; res]',
-        'Fold[exp_, head_]': 'Module[{list = Level[head, 1]}, If[Length[list] == 0, head, Fold[exp, First[list], Rest[list]]]]'
+        'Fold[exp_, head_] /; Length[head] > 0': 'Fold[exp, First[head], Rest[head]]'
     }
 
 
@@ -2055,8 +2056,8 @@ class FoldList(Builtin):
     """
 
     rules = {
-        'FoldList[exp_, x_, head_]': 'Module[{list = Level[head, 1]}, Prepend[Table[Fold[exp, x, Take[list, i]], {i, 1, Length[list]}], x]]',
-        'FoldList[exp_, head_]': 'Module[{list = Level[head, 1]}, If[Length[list] == 0, {}, FoldList[exp, First[list], Rest[list]]]]',
+        'FoldList[exp_, x_, head_]': 'Module[{i = 1}, Head[head] @@ Prepend[Table[Fold[exp, x, Take[head, i]], {i, 1, Length[head]}], x]]',
+        'FoldList[exp_, head_]': 'If[Length[head] == 0, head, FoldList[exp, First[head], Rest[head]]]',
     }
 
 
@@ -2074,7 +2075,7 @@ class Accumulate(Builtin):
     """
 
     rules = {
-        'Accumulate[head_]': 'Head[head] @@ FoldList[Plus, head]'
+        'Accumulate[head_]': 'FoldList[Plus, head]'
     }
 
 
@@ -2117,8 +2118,8 @@ class Total(Builtin):
      = {6, 15, 24}
     """
     rules = {
-        'Total[head_]': 'Fold[Plus, head]',
-        'Total[head_, n_]': 'Fold[Plus, Flatten[head, n]]'
+        'Total[head_]': 'Apply[Plus, head]',
+        'Total[head_, n_]': 'Apply[Plus, Flatten[head, n]]'
     }
 
 
@@ -2171,4 +2172,43 @@ class Quantile(Builtin):
     rules = {
         'Quantile[list_List, q_RealValueQ]': 'Sort[list, Less][[Ceiling[q * Length[list]]]]',
         'Quantile[list_List, q_List]': 'Quantile[list, singleq] /@ q'
+    }
+
+
+class Diagonal(Builtin):
+    rules = {
+        'Diagonal[l_List, k]': 'Module[{k = 0, j = 0, i = 0}, If[n > 0, j = n, k = -n]; Table[l[[i + k, i + j]], {i, 1, Min[Dimensions[l] - {k, j}]}]]',
+        'Diagonal[l_List]' : 'Module[{i = 0}, Table[l[[i, i]], {i, 1, Min[Dimensions[l]]}]]'
+    }
+
+class Tr(Builtin):
+    rules = {
+        'Tr[m_List] /; Length[Dimensions[m]] == 1': 'Total[m]',
+        'Tr[m_List, head_, level_]': 'Apply[head, Diagonal[Flatten[m, level]]]',
+        'Tr[m_List, head_]': 'Apply[head, Diagonal[m]]',
+        'Tr[m_List]': 'Tr[m, Plus]'
+
+    }
+
+
+class ListCorrelate(Builtin):       
+    rules = {
+        'ListCorrelate[ker_List, list_List]': 'Map[ker.# & , Partition[list, Length[ker], 1]]'
+    }
+
+class ListConvolve(Builtin):
+    rules = {
+        'ListConvolve[ker_List, list_List]': 'Map[Reverse[ker].# & , Partition[list, Length[ker], 1]]'
+    }
+
+class MovingAverage(Builtin):
+    # Todo: Length constraints
+    rules = {
+        'MovingAverage[list_List, weights_List]': 'ListCorrelate[weights/ Total[weights], list]',
+        'MovingAverage[list_List, r_Integer]': 'MovingAverage[list, ConstantArray[1, r]]'
+    }
+
+class MovingMedian(Builtin):
+    rules = {
+        'MovingMedian[list_List]': 'MovingAverage[list, 2]'
     }
