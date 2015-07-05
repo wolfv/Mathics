@@ -2121,3 +2121,42 @@ class Total(Builtin):
         'Total[head_]': 'Apply[Plus, head]',
         'Total[head_, n_]': 'Apply[Plus, Flatten[head, n]]'
     }
+
+
+class Diagonal(Builtin):
+    rules = {
+        'Diagonal[l_List, k]': 'Module[{k = 0, j = 0, i = 0}, If[n > 0, j = n, k = -n]; Table[l[[i + k, i + j]], {i, 1, Min[Dimensions[l] - {k, j}]}]]',
+        'Diagonal[l_List]' : 'Module[{i = 0}, Table[l[[i, i]], {i, 1, Min[Dimensions[l]]}]]'
+    }
+
+class Tr(Builtin):
+    rules = {
+        'Tr[m_List] /; Length[Dimensions[m]] == 1': 'Total[m]',
+        'Tr[m_List, head_, level_]': 'Apply[head, Diagonal[Flatten[m, level]]]',
+        'Tr[m_List, head_]': 'Apply[head, Diagonal[m]]',
+        'Tr[m_List]': 'Tr[m, Plus]'
+
+    }
+
+
+class ListCorrelate(Builtin):       
+    rules = {
+        'ListCorrelate[ker_List, list_List]': 'Map[ker.# & , Partition[list, Length[ker], 1]]'
+    }
+
+class ListConvolve(Builtin):
+    rules = {
+        'ListConvolve[ker_List, list_List]': 'Map[Reverse[ker].# & , Partition[list, Length[ker], 1]]'
+    }
+
+class MovingAverage(Builtin):
+    # Todo: Length constraints
+    rules = {
+        'MovingAverage[list_List, weights_List]': 'ListCorrelate[weights/ Total[weights], list]',
+        'MovingAverage[list_List, r_Integer]': 'MovingAverage[list, ConstantArray[1, r]]'
+    }
+
+class MovingMedian(Builtin):
+    rules = {
+        'MovingMedian[list_List]': 'MovingAverage[list, 2]'
+    }
