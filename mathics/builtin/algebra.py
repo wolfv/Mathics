@@ -93,7 +93,7 @@ class Simplify(Builtin):
         except TypeError:
             # XXX What's going on here?
             pass
-        result = sympy.trigsimp(result)
+        # result = sympy.trigsimp(result)
         result = sympy.together(result)
         result = sympy.cancel(result)
         result = from_sympy(result)
