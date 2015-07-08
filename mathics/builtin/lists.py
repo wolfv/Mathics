@@ -1217,21 +1217,22 @@ class Range(Builtin):
     """
 
     rules = {
-        'Range[imax_?RealNumberQ]': 'Range[1, imax, 1]',
-        'Range[imin_?RealNumberQ, imax_?RealNumberQ]': 'Range[imin, imax, 1]',
+        'Range[imax_]': 'Range[1, imax, 1]',
+        'Range[imin_, imax_]': 'Range[imin, imax, 1]',
     }
 
     def apply(self, imin, imax, di, evaluation):
-        'Range[imin_?RealNumberQ, imax_?RealNumberQ, di_?RealNumberQ]'
+        'Range[imin_, imax_, di_]'
 
-        imin = imin.value
-        imax = imax.value
-        di = di.value
+        imin = imin.to_sympy(positive=True)
+        # imin = imin.value
+        imax = imax.to_sympy(positive=True)
+        di = di.to_sympy(positive=True)
         index = imin
         result = []
-        while index <= imax:
+        while sympy.LessThan(index, imax):
             evaluation.check_stopped()
-            result.append(Number.from_mp(index))
+            result.append(from_sympy(index))
             index += di
         return Expression('List', *result)
 
