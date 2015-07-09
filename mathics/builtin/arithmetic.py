@@ -1082,13 +1082,15 @@ class Conjugate(SympyFunction):
     >> Conjugate[{{1, 2 + I 4, a + I b}, {I}}]
      = {{1, 2 - 4 I, Conjugate[a] - I Conjugate[b]}, {-I}}
     """
+
     rules = {
-        'Conjugate[a_ + b_]': 'Conjugate[a] + Conjugate[b]',
-        'Conjugate[a_ * b_]': 'Conjugate[a] * Conjugate[b]',
-        'Conjugate[number_Complex]': 'Re[number] - I*Im[number]',
-        'Conjugate[number_?NumberQ]': 'number',
         'Conjugate[list_List]': 'Map[Conjugate, list, {1}]'
     }
+
+    def apply(self, expr, evaluation):
+        'Conjugate[expr_]'
+
+        return from_sympy(sympy.functions.conjugate(expr.to_sympy()))
 
 
 class Abs(_MPMathFunction):

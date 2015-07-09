@@ -163,6 +163,12 @@ class Variance(Builtin):
             return from_sympy(stats.variance(dist))
 
 
+class Covariance(Builtin):
+
+    rules = {
+        'Covariance[vec1_List, vec2_List]': '(vec1 - Mean[vec1]).Conjugate[vec2 - Mean[vec2]] / (Length[vec1]-1)'
+    }
+
 class RandomVariate(Builtin):
     # TODO:
     # RandomVariate[dist, {n1, n2, ... }] -> array of n1 x n2 ... 
