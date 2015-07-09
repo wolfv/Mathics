@@ -1225,7 +1225,7 @@ class Range(Builtin):
         'Range[imin_, imax_, di_]'
 
         imin = imin.to_sympy(positive=True)
-        # imin = imin.value
+        # imin = imin.valueRang
         imax = imax.to_sympy(positive=True)
         di = di.to_sympy(positive=True)
         index = imin
@@ -2124,43 +2124,6 @@ class Total(Builtin):
     }
 
 
-class Mean(Builtin):
-    """
-    <dl>
-    <dt>'Mean[$list$]'
-    <dd>
-        Mean over all values in list (Total[list] / Length[list])
-    </dd>
-    </dt>
-    </dl>
-    >> Mean[{1,2,3}]
-     = 2
-    >> Mean[{a, b, 213}]
-     = (123 + a + b) / 3
-    """
-    rules = {
-        'Mean[list_List]': 'Total[list] / Length[list]'
-    }
-
-
-class Variance(Builtin):
-    """
-    <dl>
-    <dt>'Mean[$list$]'
-    <dd>
-        Mean over all values in list (Total[list] / Length[list])
-    </dd>
-    </dt>
-    </dl>
-    >> Mean[{1,2,3}]
-     = 2
-    >> Mean[{a, b, 213}]
-     = (123 + a + b) / 3
-    """
-
-    rules = {
-        'Variance[list_List]': '(list-Mean[list]).Conjugate[list-Mean[list]]/(Length[list]-1)'
-    }
 
 
 class StandardDeviation(Builtin):
