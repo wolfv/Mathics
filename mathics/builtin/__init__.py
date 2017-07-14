@@ -7,10 +7,10 @@ from __future__ import absolute_import
 from mathics.builtin import (
     algebra, arithmetic, assignment, attributes, calculus, combinatorial, compilation,
     comparison, control, datentime, diffeqns, evaluation, exptrig, functional,
-    graphics, graphics3d, image, inout, integer, iohooks, linalg, lists, logic, manipulate, natlang, numbertheory,
-    numeric, options, patterns, plot, physchemdata, randomnumbers, recurrence,
-    specialfunctions, scoping, strings, structure, system, tensors, xmlformat,
-    optimization)
+    graphics, graphics3d, image, inout, integer, iohooks, linalg, lists, logic,
+    manipulate, natlang, quantities, numbertheory, numeric, options, patterns, 
+    plot, physchemdata, randomnumbers, recurrence, specialfunctions, scoping, 
+    strings, structure, system, tensors, xmlformat, optimization)
 
 from mathics.builtin.base import (
     Builtin, SympyObject, BoxConstruct, Operator, PatternObject)
@@ -20,10 +20,10 @@ from mathics.settings import ENABLE_FILES_MODULE
 modules = [
     algebra, arithmetic, assignment, attributes, calculus, combinatorial, compilation,
     comparison, control, datentime, diffeqns, evaluation, exptrig, functional,
-    graphics, graphics3d, image, inout, integer, iohooks, linalg, lists, logic, manipulate, natlang, numbertheory,
-    numeric, options, patterns, plot, physchemdata, randomnumbers, recurrence,
-    specialfunctions, scoping, strings, structure, system, tensors, xmlformat,
-    optimization]
+    graphics, graphics3d, image, inout, integer, iohooks, linalg, lists, logic, 
+    manipulate, natlang, quantities, numbertheory, numeric, options, patterns, 
+    plot, physchemdata, randomnumbers, recurrence, specialfunctions, scoping, 
+    strings, structure, system, tensors, xmlformat, optimization]
 
 if ENABLE_FILES_MODULE:
     from mathics.builtin import files, importexport
