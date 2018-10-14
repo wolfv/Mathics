@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 set -e
+export MATHICS_ALLOWED_HOSTS="hub.mybinder.org"
 python mathics/server.py --port 1234 &
 exec "$@"
