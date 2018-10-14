@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-python mathics/server.py --port 1234
+python mathics/server.py --port 1234 &
 
 exec "$@"
