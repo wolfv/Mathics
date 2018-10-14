@@ -393,7 +393,7 @@ function submitQuery(textarea, onfinish) {
 
   textarea.li.addClassName('loading');
   $('logo').addClassName('working');
-  new Ajax.Request('/ajax/query/', {
+  new Ajax.Request('./ajax/query/', {
     method: 'post',
     parameters: {
       query: textarea.value

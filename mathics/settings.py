@@ -33,6 +33,9 @@ DEFAULT_MAX_RECURSION_DEPTH = 512
 # historically 10000 was used on public mathics servers
 MAX_STORED_SIZE = 10000
 
+if os.environ.get("MATHICS_ALLOWED_HOSTS"):
+    ALLOWED_HOSTS = [x.strip() for x in os.environ["MATHICS_ALLOWED_HOSTS"].split(",")]
+
 ADMINS = (
     ('Admin', 'mail@test.com'),
 )

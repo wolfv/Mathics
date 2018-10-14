@@ -1,0 +1,4 @@
+set -e
+
+pip install -e .
+export MATHICS_ALLOWED_HOSTS="hub.mybinder.org"

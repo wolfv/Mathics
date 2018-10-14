@@ -36,7 +36,7 @@ function showPage(response) {
 }
 
 function loadDoc(page) {
-	new Ajax.Request('/ajax/doc' + page, {
+	new Ajax.Request('./ajax/doc' + page, {
 		method: 'get',
 		onSuccess: function(transport) {
 			docLoaded = true;
@@ -82,7 +82,7 @@ function searchChange(event) {
 	var query = $('search').value.strip();
 	if (!$('search').hasClassName('empty')) {
 		if (query) {
-			new Ajax.Request('/ajax/doc/search/', {
+			new Ajax.Request('./ajax/doc/search/', {
 				method: 'get',
 				parameters: {
 					query: query
